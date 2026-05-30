@@ -1,0 +1,21 @@
+# Node
+node_modules/
+.npm/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Project config
+.vscode/
+.idea/
+
+# Environment files
+.env
+.env.local
+
+# Zip files
+*.zip
+*.crx
