@@ -1,13 +1,12 @@
 # GeminEye
  
  <div align="center">
--  <!-- <img src="assets/icon.png" alt="GeminEye Logo" width="128"/> -->
-+  <img src="src/icon128.png" alt="GeminEye Logo" width="128"/>
+  <img src="src/icon128.png" alt="GeminEye Logo" width="128"/>
    
    **A lightweight browser extension designed to monitor, estimate, and visualize resource consumption, token usage, and rate limits dynamically on the Gemini Web UI.**
    
    [![Manifest V3](https://img.shields.io/badge/Manifest-V3-blue)](#)
-   [![Version 1.1](https://img.shields.io/badge/Version-1.1-brightgreen)](#)
+   [![Version 1.2.0](https://img.shields.io/badge/Version-1.2.0-brightgreen)](#)
    [![License: MIT](https://img.shields.io/badge/License-MIT-purple)](#)
    [![Platform](https://img.shields.io/badge/Platform-Chrome%20Extension-yellow)](#)
  </div>
@@ -28,8 +27,8 @@
  - **System Persona Playground:** Inject structural instructions (`[SYSTEM INSTRUCTION: ...]`) directly into the Gemini prompt box, seeded with clinical, security, and developer profiles.
  - **Pre-Flight Privacy Shield:** Intercepts outgoing queries matching common API keys or PII patterns with a prompt modal offering instant auto-redaction or bypassing.
  - **1-Click Bulk Deletion (V1.4):** Click the edit icon to reveal hidden red minus buttons on all sidebar chats, allowing you to bypass Google's tedious multi-click deletion menus.
- - **Chat Compacting (Phase 3):** Click the big square button to intelligently scrape your entire chat history, aggressively condense it, auto-navigate to a new chat, and paste the condensed summary. This carries all your history forward to save token space!
- - **Chat Forking (Phase 3):** Small "Fork 🔀" buttons are injected directly into every message. Click one to "rewind time" and truncate your history right at that message, leaving behind any bad responses. It auto-navigates to a new chat and pastes your clean, forked branch!
+ - **Chat Compacting (Phase 3):** Click the "Generate Chat Summary" button on the floating action bar to instantly inject a highly-structured summarization prompt directly into the current chat's reply box, generating a compact context snapshot in-place to save input tokens.
+ - **Chat Forking (Phase 3):** Message-level "Fork 🔀" buttons are injected directly next to each message (styled natively to match the extension's controls). Click to branch the chat up to that point, opening a new session with a structured recap prompt covering objectives, last good state, key decisions, key artifacts, and constraints.
 
 ## Installation
 
@@ -66,8 +65,8 @@
      - **Cancel**: Aborts sending so you can edit.
 
 ### 5. Chat Compacting & Forking
-* **Forking:** Scroll to any message in the chat. A small `Fork 🔀` icon is embedded next to the response. Click it to discard all messages after that point, automatically open a fresh chat, and paste the selected conversation up to that point.
-* **Compacting:** Click the `Compact 📄` (double-page) icon on the floating action bar to grab the entire conversation, strip clutter, automatically open a new chat window, and paste the condensed context to preserve memory.
+* **Forking:** Scroll to any message in the chat. A small `Fork 🔀` icon is embedded next to the response (styled to match the other extension icons). Click it to branch the conversation from that point. It automatically opens a fresh chat and pastes a structured recap prompt covering objectives, last good state, key decisions, key artifacts, and constraints.
+* **Compacting:** Click the `Generate Chat Summary` icon on the floating action bar to instantly inject a structured summary prompt into the active chat. This generates a compact, copy-ready context block of the entire conversation directly in the active thread, avoiding token duplication.
 * **Bulk Deletion:** Click the `Edit 🖊️` (pencil) icon on the action bar to reveal inline deletion minus buttons (`×`) next to all threads in Gemini's left sidebar, enabling rapid cleanup.
 
 ## Architecture

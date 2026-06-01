@@ -227,11 +227,14 @@ function initUI() {
   const details = document.createElement('div');
   details.className = 'gemineye-details';
   details.innerHTML = `
+    <div class="gemineye-title-row">
+      <span class="gemineye-title">Tokens & Cost Estimator</span>
+    </div>
     <div class="gemineye-row">
       <div class="gemineye-stat"><span class="gemineye-label" title="Current Chat Context (tokens)">This Chat:</span><span class="gemineye-value" id="ge-chat-curr">0</span></div>
     </div>
     <div class="gemineye-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-      <span class="gemineye-label">Active Model:</span>
+      <span class="gemineye-label">Select API Model to Calculate Cost:</span>
       <select id="ge-model-select" class="gemineye-select"></select>
     </div>
     <div class="gemineye-row">
@@ -379,7 +382,7 @@ function initUI() {
   const pendingFork = localStorage.getItem('ge_pending_fork');
   if (pendingFork) {
     localStorage.removeItem('ge_pending_fork');
-    showToast("Injecting Forked Branch...", true);
+    showToast("Injecting conversation context...");
     
     let attempts = 0;
     const injectInterval = setInterval(() => {
@@ -570,13 +573,23 @@ async function injectSpecificPrompt(promptText, autoSubmit = true) {
 async function injectPromptContext() {
   const allMsgs = Array.from(document.querySelectorAll('.ge-has-fork'));
   if (allMsgs.length > 0) {
-    // Treat "Compact Chat" as just a fork of the very last message in the entire chat!
-    const lastMsg = allMsgs[allMsgs.length - 1];
-    executeFork(lastMsg, true);
+    const summaryPrompt = `Summarize our entire conversation into a compact, copy-ready context block for a new chat session. Output ONLY a single raw markdown code block (\`\`\`markdown ... \`\`\`) with these labeled sections in order:
+## Active Task — What we were working on at the exact moment this conversation ended. Specific enough that work can resume immediately.
+## Decisions & Rationale — What was decided and why, including approaches that were explicitly rejected and the reason they were ruled out.
+## Context & Environment — Domain-specific background needed to continue: tools, platforms, sources, references, clinical settings, personas, constraints — whatever isn't self-evident.
+## Key Artifacts — Any output produced during the conversation: code, templates, documents, frameworks, analyses, or drafts. Condensed if lengthy, preserving critical details.
+## Problems & Solutions — Issues encountered and how they were resolved.
+## Open Issues & Blockers — Unresolved questions or blockers still needing attention.
+## Next Steps — Ordered list of what to do next.
+## Hard Constraints — All rules, preferences, and non-negotiables established during the conversation.
+Rules: gender-neutral, zero filler, no commentary outside the code block, maximum information density, write as if the receiving session has zero prior context.`;
+    showToast("Generating chat summary...");
+    injectSpecificPrompt(summaryPrompt, true);
   } else {
     showToast("No messages found to compact", true);
   }
 }
+
 
 function scanForForkIcons() {
   // If we are on a blank new chat page, do not scan or inject any fork icons.
@@ -620,29 +633,6 @@ function scanForForkIcons() {
     forkBtn.innerHTML = `<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M15 4l2.5 2.5L14 10l-2-2 3.5-3.5L13 2H22v9l-2.5-2.5zM10 14L6.5 10.5 10 7 7 4l-5 5 5 5 3-3z"/></svg>`;
     forkBtn.title = "Fork Chat from Here";
     
-    // Position securely inside the bubble, styled to pop!
-    forkBtn.style.position = 'absolute';
-    forkBtn.style.right = '12px';
-    forkBtn.style.top = '12px';
-    forkBtn.style.width = '32px';
-    forkBtn.style.height = '32px';
-    forkBtn.style.zIndex = '999';
-    // Bright Google blue background with a shadow so it stands out on any theme
-    forkBtn.style.background = '#1a73e8';
-    forkBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.5)';
-    forkBtn.style.border = '1px solid rgba(255,255,255,0.2)';
-    forkBtn.style.borderRadius = '50%';
-    forkBtn.style.cursor = 'pointer';
-    forkBtn.style.display = 'flex';
-    forkBtn.style.alignItems = 'center';
-    forkBtn.style.justifyContent = 'center';
-    forkBtn.style.color = '#ffffff';
-    forkBtn.style.transition = 'transform 0.1s, background 0.1s';
-    
-    // Add hover effect
-    forkBtn.addEventListener('mouseenter', () => { forkBtn.style.transform = 'scale(1.1)'; forkBtn.style.background = '#1557b0'; });
-    forkBtn.addEventListener('mouseleave', () => { forkBtn.style.transform = 'scale(1)'; forkBtn.style.background = '#1a73e8'; });
-    
     if (getComputedStyle(msg).position === 'static') {
       msg.style.position = 'relative';
     }
@@ -675,11 +665,41 @@ function executeFork(targetMsg, isCompact = false) {
     }
   }
   
-  const actionText = isCompact ? "compacted" : "forked";
-  const prompt = `Please review our entire conversation history below. Compress and summarize all of the key context, decisions made, code written, issues solved, fixes used, and important information into a highly condensed format. Output this ENTIRE summary inside a single raw markdown code block (starting with \`\`\`markdown) so that I can easily copy it in one click. Keep it highly concise. I will use this summary as the starting context for a new fresh chat.\n\nHere is the context up to the point we ${actionText}:\n` + compacted;
+  const prompt = `You are being used at a fork point in this conversation. Review the entire conversation history up to this point and produce a compact, copy-ready snapshot for a new chat session.
+
+Output ONLY a single raw markdown code block (\`\`\`markdown ... \`\`\`) with these labeled sections in order:
+
+## Objective
+The core goal of this conversation — what we are ultimately trying to accomplish.
+
+## Last Good State
+A precise description of where the conversation stood — specific enough that a new session can resume immediately with zero prior context.
+
+## Key Decisions & Rationale
+What was decided and why, including anything explicitly tried, ruled out, or abandoned.
+
+## Context & Environment
+Domain-specific background needed to continue: tools, platforms, references, settings, personas, tone, style — anything not self-evident.
+
+## Key Artifacts
+Any output produced so far: code, templates, documents, analyses, or drafts. Condensed if lengthy, preserving critical details.
+
+## Approaches to Avoid
+Any direction that produced poor results, failed, or was explicitly rejected — so the new session does not repeat them.
+
+## Next Steps
+Ordered list of what the new session should focus on immediately.
+
+## Hard Constraints
+All rules, preferences, formats, tones, and non-negotiables established during the conversation.
+
+Rules: gender-neutral, zero filler, no commentary outside the code block, maximum information density, write as if the receiving session has zero prior context.
+
+Here is the context up to the point we forked:
+` + compacted;
   
   localStorage.setItem('ge_pending_fork', prompt);
-  showToast(isCompact ? "Compacting chat..." : "Forking branch...");
+  showToast("Forking branch...");
   
   // Force a hard navigation to a new chat. This is infinitely more reliable than trying 
   // to synthetically click a React Router link, and guarantees a clean script boot.

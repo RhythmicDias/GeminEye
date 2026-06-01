@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-06-01
+### Added
+- **New Title Header**: Added "Tokens & Cost Estimator" title in the expanded stats panel with dark/light mode styling.
+- **Structured Forking Prompt**: Replaced the message-level fork prompt with a structured template asking for Objective, Last Good State, Key Decisions, Key Artifacts, etc.
+- **In-Chat Compacting**: Optimized the "Generate Chat Summary" button to inject the summarization prompt directly into the active chat, avoiding token duplication and hard navigations.
+
+### Changed
+- **Fork Button Aesthetics**: Redesigned the message-level Fork button to inherit the main `.gemineye-btn` style, matching the rest of the extension's sidebar controls.
+- **Wording & Notifications**: Renamed injection notification to "Injecting conversation context..." and removed warning-red styling to make it neutral-green.
+
+### Fixed
+- **Typography Inheritance**: Applied the "Google Sans" typeface stack to all form elements, inputs, selects, and buttons inside the extension wrapper and modal overlay.
+- **Double Spacing Layout**: Removed redundant margin-bottom rules and tightened details gap to 8px to reduce vertical empty space in the panel.
+
 ## [1.1.0] - 2026-05-30
 ### Added
 - **API Cost Simulator**: Integrated dynamic estimation for Gemini models (Gemini 2.5 Pro/Flash/Lite, Gemini 3 Flash, Gemini 3.1 Pro/Flash-Lite, Gemini 3.5 Flash).
