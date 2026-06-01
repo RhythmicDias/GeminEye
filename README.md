@@ -28,7 +28,7 @@
  - **Pre-Flight Privacy Shield:** Intercepts outgoing queries matching common API keys or PII patterns with a prompt modal offering instant auto-redaction or bypassing.
  - **1-Click Bulk Deletion (V1.4):** Click the edit icon to reveal hidden red minus buttons on all sidebar chats, allowing you to bypass Google's tedious multi-click deletion menus.
  - **Chat Compacting (Phase 3):** Click the "Generate Chat Summary" button on the floating action bar to instantly inject a highly-structured summarization prompt directly into the current chat's reply box, generating a compact context snapshot in-place to save input tokens.
- - **Chat Forking (Phase 3):** Message-level "Fork 🔀" buttons are injected directly next to each message (styled natively to match the extension's controls). Click to branch the chat up to that point, opening a new session with a structured recap prompt covering objectives, last good state, key decisions, key artifacts, and constraints.
+ - **Chat Forking (Phase 3):** Message-level Fork (split-branch icon) buttons are injected directly next to each message (styled natively to match the extension's controls). Click to branch the chat up to that point, opening a new session with a structured recap prompt covering objectives, last good state, key decisions, key artifacts, and constraints.
 
 ## Installation
 
@@ -65,7 +65,7 @@
      - **Cancel**: Aborts sending so you can edit.
 
 ### 5. Chat Compacting & Forking
-* **Forking:** Scroll to any message in the chat. A small `Fork 🔀` icon is embedded next to the response (styled to match the other extension icons). Click it to branch the conversation from that point. It automatically opens a fresh chat and pastes a structured recap prompt covering objectives, last good state, key decisions, key artifacts, and constraints.
+* **Forking:** Scroll to any message in the chat. A small Fork (split-branch icon) is embedded next to the response (styled to match the other extension icons). Click it to branch the conversation from that point. It automatically opens a fresh chat and pastes a structured recap prompt covering objectives, last good state, key decisions, key artifacts, and constraints.
 * **Compacting:** Click the `Generate Chat Summary` icon on the floating action bar to instantly inject a structured summary prompt into the active chat. This generates a compact, copy-ready context block of the entire conversation directly in the active thread, avoiding token duplication.
 * **Bulk Deletion:** Click the `Edit 🖊️` (pencil) icon on the action bar to reveal inline deletion minus buttons (`×`) next to all threads in Gemini's left sidebar, enabling rapid cleanup.
 
