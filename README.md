@@ -69,6 +69,27 @@
 * **Compacting:** Click the `Generate Chat Summary` icon on the floating action bar to instantly inject a structured summary prompt into the active chat. This generates a compact, copy-ready context block of the entire conversation directly in the active thread, avoiding token duplication.
 * **Bulk Deletion:** Click the `Edit 🖊️` (pencil) icon on the action bar to reveal inline deletion minus buttons (`×`) next to all threads in Gemini's left sidebar, enabling rapid cleanup.
 
+## Screenshots
+
+<div align="center">
+  <table>
+    <tr>
+      <td valign="top" align="center">
+        <h4>Floating Controls</h4>
+        <img src="assets/buttons.png" alt="GeminEye Floating Action Buttons" width="100"/>
+      </td>
+      <td valign="top" align="center">
+        <h4>Tokens & Cost Estimator</h4>
+        <img src="assets/estimator.png" alt="GeminEye Stats Estimator Panel" width="350"/>
+      </td>
+      <td valign="top" align="center">
+        <h4>Prompt & Persona Library</h4>
+        <img src="assets/library.png" alt="GeminEye Prompt Library Dropdown" width="350"/>
+      </td>
+    </tr>
+  </table>
+</div>
+
 ## Architecture
 
 Built purely with vanilla HTML, CSS, and JavaScript, strictly adhering to the **Clean Code** principles and the **Manifest V3** standard.
